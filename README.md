@@ -1,5 +1,8 @@
 # Kernel-Flow-and-Probit
 
+run_EL_newton calculates u* using newton's method for the minimizer function or directly solves using Euler-Lagrange equations. Shows computation time and error.
+run_kf.py runs kernel flow to approximate theta on data set with 3 chosen clusters.  
+
 ## Referenced equations from following papers
 
 [1] H. Owhadi and G. R. Yoo. Kernel flows: From learning kernels from data into the abyss. Journal of Computational Physics, 389:22–47, 2019.
