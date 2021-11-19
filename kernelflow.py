@@ -24,7 +24,7 @@ def select_Nf(N, Z_prime):
     N_f = N_f_i.size
     return N_f_i
 
-def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
+def theta_newt(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
     '''
     f - inputfunction
     theta_0 - initialization
@@ -63,6 +63,7 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         grad = autograd.grad(rho)
         direction = grad(theta)
         theta = theta - learning_rate*direction
+        print(str(it) + " | cost: " + str(rho(theta)))
         print(str(it) + " | theta: " + str(theta))
         print(str(it) + " | direction: " + str(direction))
         if np.linalg.norm(direction) < tol:

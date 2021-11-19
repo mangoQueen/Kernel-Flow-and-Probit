@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from time import perf_counter
-from kernelflow import theta_EL
+from kernelflow import theta_newt
 import autograd.numpy as np
 import sys
 import argparse
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", help="maximu iteration for gradient descent ")
 
     g = 0.5; alpha = 1; tau = 1; eps = 0.15; rval = 0.25
-    learning_rate = 1e-3; tol=1e-05; maxiter=50
+    learning_rate = 1e-6; tol=1e-05; maxiter=10
     args = parser.parse_args()
     if args.g:
         g = float(args.g)
@@ -72,6 +72,6 @@ if __name__ == "__main__":
         maxiter = float(args.m)
 
     theta_0 = np.array([g, alpha, tau, eps, rval])
-    theta, it = theta_EL(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
+    theta, it = theta_newt(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
     print("Number of Iterations: " + str(it))
     print("Theta: " + str(theta))
