@@ -56,7 +56,6 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         for u_i, nf_i in enumerate(N_f_i):
             num += (uast_tild[u_i] - uast[nf_i])**2
             denom += uast[nf_i]**2
-        print("rho: " + str(num/denom))
         return num/denom
 
     theta = theta_0
@@ -64,7 +63,7 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         grad = autograd.elementwise_grad(rho)
         direction = grad(theta)
         theta = theta - learning_rate*direction
-        print("direction: " + str(direction))
+        # print("direction: " + str(direction))
         if np.linalg.norm(direction) < tol:
             break
     return theta, it

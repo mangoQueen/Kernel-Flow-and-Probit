@@ -52,7 +52,7 @@ if __name__ == "__main__":
     parser.add_argument("-m", help="maximu iteration for gradient descent ")
 
     g = 0.5; alpha = 1; tau = 1; eps = 0.15; rval = 0.25
-    learning_rate = 1e-5; tol=1e-08; maxiter=100
+    learning_rate = 1e-3; tol=1e-05; maxiter=50
     args = parser.parse_args()
     if args.g:
         g = float(args.g)
