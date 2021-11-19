@@ -60,10 +60,11 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
 
     theta = theta_0
     for it in range(maxiter):
-        grad = autograd.elementwise_grad(rho)
+        grad = autograd.grad(rho)
         direction = grad(theta)
         theta = theta - learning_rate*direction
-        # print("direction: " + str(direction))
+        print(str(it) + " | theta: " + str(theta))
+        print(str(it) + " | direction: " + str(direction))
         if np.linalg.norm(direction) < tol:
             break
     return theta, it
