@@ -1,6 +1,6 @@
 import utils
 import scipy.optimize
-import numpy as np
+import autograd.numpy as np
 
 
 # -----------Directly solving EL---------------------------------
@@ -42,16 +42,16 @@ def u_ast_EL(X, N_lst, g, y, Z_p, alpha, tau, eps, rval, x_0 = True):
     val_alpha = alpha
     val_tau = tau
     val_r = rval
-    if (isinstance(g, int) or isinstance(g, float)) == False:
-        val_g = g._value
-    if (isinstance(eps, int) or isinstance(eps, float)) == False:
-        val_eps = eps._value
-    if (isinstance(alpha, int) or isinstance(alpha, float)) == False:
-        val_alpha = alpha._value
-    if (isinstance(tau, int) or isinstance(tau, float)) == False:
-        val_tau = tau._value
-    if (isinstance(rval, int) or isinstance(rval, float)) == False:
-        val_r = rval._value
+    # if (isinstance(g, int) or isinstance(g, float)) == False:
+    #     val_g = g._value
+    # if (isinstance(eps, int) or isinstance(eps, float)) == False:
+    #     val_eps = eps._value
+    # if (isinstance(alpha, int) or isinstance(alpha, float)) == False:
+    #     val_alpha = alpha._value
+    # if (isinstance(tau, int) or isinstance(tau, float)) == False:
+    #     val_tau = tau._value
+    # if (isinstance(rval, int) or isinstance(rval, float)) == False:
+    #     val_r = rval._value
 
     N = N_lst.size
     if x_0: x_0 = np.zeros((N,1))

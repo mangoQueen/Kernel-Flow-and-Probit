@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-import numpy as np
+import autograd.numpy as np
 from newton import u_ast_Newt
 from EL import u_ast_EL
 from time import perf_counter
