@@ -44,8 +44,10 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         g, alpha, tau, eps, rval = theta
         N_f_i = select_Nf(N, Z_prime)
 
-        uast = u_ast_EL(X, N, g, y, Z_prime, alpha, tau, eps, rval)
-        uast_tild = u_ast_EL(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
+        # uast = u_ast_EL(X, N, g, y, Z_prime, alpha, tau, eps, rval)
+        # uast_tild = u_ast_EL(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
+        uast = u_ast_Newt(X, N, g, y, Z_prime, alpha, tau, eps, rval)
+        uast_tild = u_ast_Newt(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
 
         # Compute |uast-uast_tild|^2/|uast|^2 using L2 norm
         # loop over each valid N_f_i

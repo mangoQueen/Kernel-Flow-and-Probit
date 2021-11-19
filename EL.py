@@ -9,7 +9,7 @@ import autograd
 # Array given by Fj in [3] - (12), (13)
 def F_sum(N_lst, g, y, Z_p, u):
     '''
-    N - size of vector
+    N_lst - list of indices used
     g - gamma
     y - labels
     Z_p - Z' i.e. indices of labels
@@ -37,7 +37,7 @@ def u_ast_EL(X, N_lst, g, y, Z_p, alpha, tau, eps, rval, x_0 = True):
     '''
     if type(N_lst) == int:
         N_lst = np.arange(N_lst)
-    # floats saving parameters
+    # adjusted for autograd: floats saving parameters
     val_g = g
     val_eps = eps
     val_alpha = alpha
