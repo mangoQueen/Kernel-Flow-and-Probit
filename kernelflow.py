@@ -60,7 +60,6 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
     theta = theta_0
     for it in range(maxiter):
         grad = autograd.elementwise_grad(rho)
-        print(grad)
         direction = grad(theta)
         theta = theta - learning_rate*direction
         print("direction: " + str(direction))
