@@ -68,4 +68,4 @@ def theta_newt(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         print(str(it) + " | direction: " + str(direction))
         if np.linalg.norm(direction) < tol:
             break
-    return theta, it
+    return theta, it+1
