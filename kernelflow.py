@@ -41,13 +41,61 @@ def theta_newt(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         Z_prime - indices of labeled data
         y - labels (of Z_prime)
         '''
-        g, alpha, tau, eps, rval = theta
+        g = 0.5; eps = 0.15; rval = 0.25
+        alpha, tau= theta
+
+        # g, alpha, tau, eps, rval = theta
         N_f_i = select_Nf(N, Z_prime)
 
-        # uast = u_ast_EL(X, N, g, y, Z_prime, alpha, tau, eps, rval)
-        # uast_tild = u_ast_EL(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
         uast = u_ast_Newt(X, N, g, y, Z_prime, alpha, tau, eps, rval)
         uast_tild = u_ast_Newt(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
+
+        # Compute |uast-uast_tild|^2/|uast|^2 using L2 norm
+        # loop over each valid N_f_i
+        num = 0.0
+        denom = 0.0
+        for u_i, nf_i in enumerate(N_f_i):
+            num += (uast_tild[u_i] - uast[nf_i])**2
+            denom += uast[nf_i]**2
+        return num/denom
+
+    theta = theta_0
+    for it in range(maxiter):
+        grad = autograd.grad(rho)
+        direction = grad(theta)
+        theta = theta - learning_rate*direction
+        print(str(it) + " | cost: " + str(rho(theta)))
+        print(str(it) + " | theta: " + str(theta))
+        print(str(it) + " | direction: " + str(direction))
+        if np.linalg.norm(direction) < tol:
+            break
+    return theta, it+1
+
+def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
+    '''
+    f - inputfunction
+    theta_0 - initialization
+    learning_rate - step size
+    tol - tolerance for Gradient
+    maxiter - maxmimum number of iterations
+    '''
+    # Follows rho expression given in [2]-(6)
+    def rho(theta):
+        '''
+        theta - parameters to optimize (g, alpha, tau, eps, rval)
+        X - whole data (not just half)
+        N - (int) number of elements
+        Z_prime - indices of labeled data
+        y - labels (of Z_prime)
+        '''
+        g = 0.5; eps = 0.15; rval = 0.25
+        alpha, tau= theta
+
+        # g, alpha, tau, eps, rval = theta
+        N_f_i = select_Nf(N, Z_prime)
+
+        uast = u_ast_EL(X, N, g, y, Z_prime, alpha, tau, eps, rval)
+        uast_tild = u_ast_EL(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
 
         # Compute |uast-uast_tild|^2/|uast|^2 using L2 norm
         # loop over each valid N_f_i

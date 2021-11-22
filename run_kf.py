@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from time import perf_counter
-from kernelflow import theta_newt
+from kernelflow import theta_newt, theta_EL
 import autograd.numpy as np
 import sys
 import argparse
@@ -50,9 +50,11 @@ if __name__ == "__main__":
     parser.add_argument("-l", help="learning rate for gradient descent")
     parser.add_argument("-tol", help="tolerance for gradient descent ")
     parser.add_argument("-m", help="maximu iteration for gradient descent ")
+    parser.add_argument("-newton", help="Run's newton's method for computing u (input 1 if newton)")
 
-    g = 0.5; alpha = 1; tau = 1; eps = 0.15; rval = 0.25
-    learning_rate = 1e-6; tol=1e-05; maxiter=10
+    g = 0.5; alpha = 1.; tau = 1.; eps = 0.15; rval = 0.25
+    learning_rate = 1e-2; tol=1e-8; maxiter=10
+    run_EL = True
     args = parser.parse_args()
     if args.g:
         g = float(args.g)
@@ -70,8 +72,16 @@ if __name__ == "__main__":
         tol = float(args.tol)
     if args.m:
         maxiter = float(args.m)
+    if args.newton:
+        run_EL = False
 
-    theta_0 = np.array([g, alpha, tau, eps, rval])
-    theta, it = theta_newt(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
+    # theta_0 = np.array([g, alpha, tau, eps, rval])
+    theta_0 = np.array([alpha, tau])
+    if run_EL:
+        theta, it = theta_EL(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
+        print("Solving Euler-Lagrange to find u*")
+    else:
+        theta, it = theta_newt(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
+        print("Running Newton's method to find u*")
     print("Number of Iterations: " + str(it))
     print("Theta: " + str(theta))
