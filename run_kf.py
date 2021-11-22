@@ -75,8 +75,8 @@ if __name__ == "__main__":
     if args.newton:
         run_EL = False
 
-    # theta_0 = np.array([g, alpha, tau, eps, rval])
-    theta_0 = np.array([alpha, tau])
+    theta_0 = np.array([g, alpha, tau, eps, rval])
+    # theta_0 = np.array([alpha, tau])
     if run_EL:
         theta, it = theta_EL(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
         print("Solving Euler-Lagrange to find u*")

@@ -6,7 +6,8 @@ from time import perf_counter
 
 # Using Kernel Flow method to approximate parameters
 
-# Return randomly selected half data indices from N that includes labeled data
+# Return randomly selected half data indices from N that includes half of
+# labeled data
 # Follows from [1]
 def select_Nf(N, Z_prime):
     '''
@@ -14,15 +15,18 @@ def select_Nf(N, Z_prime):
     Z_prime - indices of labeled data
     '''
     N_f = int((N-Z_prime.size)/2) # Must be <= N
+    half_Z = int(Z_prime.size/2+1) # half of labels
 
     # Randomly selected indices N_f and N_c used for X,Y,Z
     # Always need to include Z' or else cant compute
     N_f_i = np.random.choice(N, N_f, replace=False)
-    for z in Z_prime:
+    Z_half= np.random.choice(Z_prime, half_Z, replace=False)
+    for z in Z_half:
         if z not in N_f_i:
             N_f_i = np.append(N_f_i, z)
+
     N_f = N_f_i.size
-    return N_f_i
+    return N_f_i, Z_half
 
 def theta_newt(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
     '''
@@ -41,14 +45,14 @@ def theta_newt(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         Z_prime - indices of labeled data
         y - labels (of Z_prime)
         '''
-        g = 0.5; eps = 0.15; rval = 0.25
-        alpha, tau= theta
+        # g = 0.15; alpha = 1.; tau = 1.;
+        # eps, rval= theta
 
-        # g, alpha, tau, eps, rval = theta
-        N_f_i = select_Nf(N, Z_prime)
+        g, alpha, tau, eps, rval = theta
+        N_f_i, Z_half = select_Nf(N, Z_prime)
 
         uast = u_ast_Newt(X, N, g, y, Z_prime, alpha, tau, eps, rval)
-        uast_tild = u_ast_Newt(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
+        uast_tild = u_ast_Newt(X, N_f_i, g, y, Z_half, alpha, tau, eps, rval)
 
         # Compute |uast-uast_tild|^2/|uast|^2 using L2 norm
         # loop over each valid N_f_i
@@ -88,14 +92,15 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         Z_prime - indices of labeled data
         y - labels (of Z_prime)
         '''
-        g = 0.5; eps = 0.15; rval = 0.25
-        alpha, tau= theta
+        # should delete in actual run
+        # g = 0.15; alpha = 1.; tau = 1.;
+        # eps, rval= theta
 
-        # g, alpha, tau, eps, rval = theta
-        N_f_i = select_Nf(N, Z_prime)
+        g, alpha, tau, eps, rval = theta
+        N_f_i, Z_half = select_Nf(N, Z_prime)
 
         uast = u_ast_EL(X, N, g, y, Z_prime, alpha, tau, eps, rval)
-        uast_tild = u_ast_EL(X, N_f_i, g, y, Z_prime, alpha, tau, eps, rval)
+        uast_tild = u_ast_EL(X, N_f_i, g, y, Z_half, alpha, tau, eps, rval)
 
         # Compute |uast-uast_tild|^2/|uast|^2 using L2 norm
         # loop over each valid N_f_i
