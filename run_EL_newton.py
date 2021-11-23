@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     u_dagger = np.append(np.ones(2*N_each), -1*np.ones(N_each))
     Z_prime = np.array([0,50,100]) # Indices of labels
-    y = np.sign(u_dagger[Z_prime]) # One label is observed within each cluster
+    y = np.sign(u_dagger) # One label is observed within each cluster
 
     # Display plot
     # fig = plt.figure()

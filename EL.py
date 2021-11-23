@@ -17,10 +17,10 @@ def F_sum(N_lst, g, y, Z_p, u):
     '''
     N = N_lst.size
     Fj = np.zeros(N)
-    for j,Z_j in enumerate(Z_p):
+    for Z_j in Z_p:
         u_j = np.where(N_lst == Z_j)
         basis=np.zeros(N);basis[u_j]=1.0
-        Fj = Fj + y[j]*utils.psi(y[j]*u[u_j], g)/utils.cap_psi(y[j]*u[u_j], g)*basis
+        Fj = Fj + y[Z_j]*utils.psi(y[Z_j]*u[u_j], g)/utils.cap_psi(y[Z_j]*u[u_j], g)*basis
     return Fj
 
 

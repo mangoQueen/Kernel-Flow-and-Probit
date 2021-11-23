@@ -33,9 +33,9 @@ def misfit(u, N_lst, y, Z_p, g):
     u - vector
     '''
     S = 0.0
-    for j,Z_j in enumerate(Z_p):
+    for Z_j in Z_p:
         u_j = np.where(N_lst == Z_j)
-        S = S - np.log(utils.cap_psi(y[j]*u[u_j][0],g))
+        S = S - np.log(utils.cap_psi(y[Z_j]*u[u_j][0],g))
     return S
 
 
