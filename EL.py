@@ -60,5 +60,5 @@ def u_ast_EL(X, N_lst, g, y, Z_p, alpha, tau, eps, rval, x_0 = True):
     C = utils.Cov_truncated(X, N_lst, val_eps, val_alpha, val_tau, val_r, n_eig)
     def final(u):
     #     C = Cov(X, N, eps, alpha, tau, rval)
-        return u - C@F_sum(N_lst, val_g, y, Z_p, u)
+        return u - np.matmul(C,F_sum(N_lst, val_g, y, Z_p, u))
     return scipy.optimize.fsolve(final, x_0)

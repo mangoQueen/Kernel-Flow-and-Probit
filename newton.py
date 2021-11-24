@@ -72,6 +72,6 @@ def u_ast_Newt(X, N_lst, g, y, Z_p, alpha, tau, eps, rval, x_0 = True):
     C_inv = utils.Cov_inv(X, N_lst, val_eps, val_alpha, val_tau, val_r)
     def probit_min(u):
         # Minimizer u for problem defined in [3]-(3)
-        return 1/2*np.dot(u, C_inv@u) + misfit(u, N_lst, y, Z_p, g)
+        return 1/2*np.dot(u, np.matmul(C_inv,u)) + misfit(u, N_lst, y, Z_p, g)
     if x_0: x_0 = np.zeros(N_lst.size)
     return newton(probit_min, x_0)

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from time import perf_counter
-from kernelflow import theta_newt, theta_EL
+from kernelflow import optm_theta
 import autograd.numpy as np
 import sys
 import argparse
@@ -14,31 +14,29 @@ if __name__ == "__main__":
     n_cluster = 3 # Number of clusters
     N = N_each*n_cluster # Total number of points
 
-    mu, sigma = 0, 0.1 # mean and standard deviation
-    xs = np.random.normal(mu, sigma, N)
-    ys = np.random.normal(mu, sigma, N)
-    zs = np.random.normal(mu, sigma, N)
+    xs = torch.rand(N)
+    ys = torch.rand(N)
+    zs = torch.rand(N)
 
     # Cluster centers: (1,0,0) (0,1,0) (0,0,1)
     xs[:N_each] += 1; ys[N_each:2*N_each] += 1; zs[2*N_each:3*N_each] += 1
-    Data = np.array([xs,ys,zs]).T
+    Data = torch.stack((xs, ys, zs), 1)
 
-    u_dagger = np.append(np.ones(2*N_each), -1*np.ones(N_each))
-    Z_prime = np.array([0,50,100]) # Indices of labels (assume only know 3 indices)
-    y = np.sign(u_dagger) # One label is observed within each cluster
-    # Note that rest of indices aren't used even though it is initialized
+    # true labels
+    u_dagger = torch.cat((torch.ones(2*N_each), -1*torch.ones(N_each)))
+    Z_prime = [0,50,100] # Indices of labels
+    y = torch.sign(u_dagger) # One label is observed within each cluster
 
     # Display plot
-
-    # fig = plt.figure()
-    # ax = Axes3D(fig)
-    # ax.scatter(xs[:2*N_each], ys[:2*N_each], zs[:2*N_each], 'r')
-    # ax.scatter(xs[2*N_each:3*N_each], ys[2*N_each:3*N_each], zs[2*N_each:3*N_each], 'b')
-    # ax.set_title('Labeled Data with ' + str(N) +' points')
-    # ax.set_xlabel('x')
-    # ax.set_ylabel('y')
-    # ax.set_zlabel('z');
-    # plt.show()
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    ax.scatter(xs[:2*N_each], ys[:2*N_each], zs[:2*N_each], 'r')
+    ax.scatter(xs[2*N_each:3*N_each], ys[2*N_each:3*N_each], zs[2*N_each:3*N_each], 'b')
+    ax.set_title('Labeled Data with ' + str(N) +' points')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z');
+    plt.show()
 
     parser = argparse.ArgumentParser()
 
@@ -76,13 +74,7 @@ if __name__ == "__main__":
     if args.newton:
         run_EL = False
 
-    theta_0 = np.array([g, alpha, tau, eps, rval])
-    # theta_0 = np.array([alpha, tau])
-    if run_EL:
-        theta, it = theta_EL(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
-        print("Solving Euler-Lagrange to find u*")
-    else:
-        theta, it = theta_newt(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
-        print("Running Newton's method to find u*")
+    theta_0 = [g, alpha, tau, eps, rval]
+    theta, it = optm_theta(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
     print("Number of Iterations: " + str(it))
     print("Theta: " + str(theta))

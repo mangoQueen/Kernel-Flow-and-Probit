@@ -112,8 +112,8 @@ def theta_EL(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         return num/denom
 
     theta = theta_0
+    grad = autograd.grad(rho)
     for it in range(maxiter):
-        grad = autograd.grad(rho)
         direction = grad(theta)
         theta = theta - learning_rate*direction
         print(str(it) + " | cost: " + str(rho(theta)))
