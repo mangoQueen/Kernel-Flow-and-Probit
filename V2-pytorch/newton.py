@@ -60,8 +60,6 @@ def u_ast_Newt(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
     tau, alpha - parameters for covariance
     rval - threshold in kernel function
     '''
-    g, alpha, tau, eps, rval = theta
-
     # adjusted for autograd: floats saving parameters
     if not torch.is_tensor(N_lst):
         N_lst = torch.arange(N_lst)
