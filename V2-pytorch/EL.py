@@ -24,7 +24,7 @@ def F_sum(N_lst, g, y, Z_p, u):
 
 
 # Function needed for fsolve using EL given in [3]-(2)
-def u_ast_EL(X, N_lst, g, y, Z_p, alpha, tau, eps, rval, x_0 = True):
+def u_ast_EL(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
     '''
     X - N*3 vector containing (x, y, z) of all data (assume same size)
     N_lst - indices of X to use (Size: N)

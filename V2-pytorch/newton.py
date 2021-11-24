@@ -31,6 +31,7 @@ def newton(f, x0, tol=1e-08, maxiter=50):
         if torch.linalg.norm(step) < tol:
             break
 
+    x.requires_grad = False
     return x.data
 
 def misfit(u, N_lst, y, Z_p, g):
@@ -50,7 +51,7 @@ def misfit(u, N_lst, y, Z_p, g):
 
 
 # Returns u* using newton's method
-def u_ast_Newt(X, N_lst, theta, y, Z_p, x_0 = True):
+def u_ast_Newt(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
     '''
     X - N*3 vector containing (x, y, z) of all data (assume same size)
     N_lst - indices of X to use (Size: N) (ex. for full N, N_lst = np.arange(N))

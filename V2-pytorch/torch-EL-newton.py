@@ -47,15 +47,14 @@ if __name__ == "__main__":
     n_eig = 20 #(62) truncation
 
     time_start = perf_counter()
-    u_ast = u_ast_EL(Data, N, g, y, Z_prime, alpha, tau, eps, rval)
+    u_ast = u_ast_EL(Data, N, g, alpha, tau, eps, rval, y, Z_prime)
     print("Runtime for EL: " + str(round(perf_counter() - time_start,3)) + "sec")
     pred_error =  (sum(abs(torch.sign(u_ast) - torch.sign(u_dagger)))/(2*N)*100).item()
     print("Error for EL: " + str(round(pred_error,2)) + '%')
 
 
     time_start = perf_counter()
-    theta0 = [g, alpha, tau, eps, rval]
-    u_ast_newt = u_ast_Newt(Data, N, theta0, y, Z_prime)
+    u_ast_newt = u_ast_Newt(Data, N, g, alpha, tau, eps, rval, y, Z_prime)
     print("Runtime for Newton's: " + str(round(perf_counter() - time_start,3)) + "sec")
     pred_error =  (sum(abs(torch.sign(u_ast_newt) - torch.sign(u_dagger)))/(2*N)*100).item()
     print("Error for Newton's: " + str(round(pred_error,2)) + '%')
