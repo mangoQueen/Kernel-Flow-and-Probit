@@ -49,11 +49,11 @@ if __name__ == "__main__":
     parser.add_argument("-l", help="learning rate for gradient descent")
     parser.add_argument("-tol", help="tolerance for gradient descent ")
     parser.add_argument("-m", help="maximu iteration for gradient descent ")
-    parser.add_argument("-newton", help="Run's newton's method for computing u (input 1 if newton)")
+    # parser.add_argument("-newton", help="Run's newton's method for computing u (input 1 if newton)")
 
     g = 0.5; alpha = 1.; tau = 1.; eps = 0.15; rval = 0.25
     learning_rate = 1e-2; tol=1e-8; maxiter=10
-    run_EL = True
+    # run_EL = True
     args = parser.parse_args()
     if args.g:
         g = float(args.g)
@@ -71,8 +71,8 @@ if __name__ == "__main__":
         tol = float(args.tol)
     if args.m:
         maxiter = float(args.m)
-    if args.newton:
-        run_EL = False
+    # if args.newton:
+    #     run_EL = False
 
     theta_0 = [g, alpha, tau, eps, rval]
     theta, it = optm_theta(Data, N, Z_prime, y, theta_0, learning_rate, tol, maxiter)
