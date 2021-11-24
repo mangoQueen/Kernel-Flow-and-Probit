@@ -19,7 +19,7 @@ def F_sum(N_lst, g, y, Z_p, u):
     for Z_j in Z_p:
         u_j = torch.where(N_lst == Z_j)
         basis=torch.zeros(N);basis[u_j]=1.0
-        Fj = Fj + y[Z_j]*psi(y[Z_j]*u[u_j], g)/cap_psi(y[Z_j]*u[u_j], g)*basis
+        Fj = Fj + y[Z_j]*utils.psi(y[Z_j]*u[u_j], g)/utils.cap_psi(y[Z_j]*u[u_j], g)*basis
     return Fj
 
 
@@ -40,7 +40,7 @@ def u_ast_EL(X, N_lst, g, y, Z_p, alpha, tau, eps, rval, x_0 = True):
     N = int(*N_lst.size())
     if x_0: x_0 = torch.zeros(N)
     n_eig = 20 #[3]-(62) truncation
-    C = Cov_truncated(X, N_lst, eps, alpha, tau, rval, n_eig)
+    C = utils.Cov_truncated(X, N_lst, eps, alpha, tau, rval, n_eig)
     def final(u):
     #     C = Cov(X, N, eps, alpha, tau, rval)
 

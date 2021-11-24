@@ -1,10 +1,11 @@
 import torch
 from torch.autograd import Variable
+import utils
 
 # -----------Newton's Method----------------------------------
 
 # Newtons method function
-def newton(f, x0, tol=1e-08, maxiter=100):
+def newton(f, x0, tol=1e-08, maxiter=50):
     '''
     f - input function
     x0 - initialization
@@ -44,7 +45,7 @@ def misfit(u, N_lst, y, Z_p, g):
     S = 0.0
     for j,Z_j in enumerate(Z_p):
         u_j = torch.where(N_lst == Z_j)
-        S = S - torch.log(cap_psi(y[Z_j]*u[u_j],g))
+        S = S - torch.log(utils.cap_psi(y[Z_j]*u[u_j],g))
     return S
 
 
@@ -64,7 +65,7 @@ def u_ast_Newt(X, N_lst, theta, y, Z_p, x_0 = True):
     if not torch.is_tensor(N_lst):
         N_lst = torch.arange(N_lst)
 
-    C_inv = Cov_inv(X, N_lst, eps, alpha, tau, rval)
+    C_inv = utils.Cov_inv(X, N_lst, eps, alpha, tau, rval)
     def probit_min(u):
         # Minimizer u for problem defined in [3]-(3)
         final = 0.5*torch.dot(u, torch.matmul(C_inv.float(),u)) + misfit(u, N_lst, y, Z_p, g)

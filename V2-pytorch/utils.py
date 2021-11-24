@@ -78,7 +78,8 @@ def Cov_truncated(X, N_lst, eps, alpha, tau, r, n_eig):
     LE = LE.float(); LV = LV.float()
 
     CE = (1/tau**2*(LE + tau**2))**alpha
-
+    
+    N = int(*N_lst.size())
     C = torch.zeros(N,N)
     for k in range(n_eig):
         C = C + 1/CE[k]*torch.outer(LV[:,k],(LV[:,k].T))
