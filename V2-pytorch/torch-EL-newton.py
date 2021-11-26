@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import torch
-from newton import u_ast_Newt
+from newton import u_ast_NEWT, u_ast_GRAD
 from EL import u_ast_EL
 from time import perf_counter
 
@@ -54,7 +54,13 @@ if __name__ == "__main__":
 
 
     time_start = perf_counter()
-    u_ast_newt = u_ast_Newt(Data, N, g, alpha, tau, eps, rval, y, Z_prime)
+    u_ast_2 = u_ast_NEWT(Data, N, g, alpha, tau, eps, rval, y, Z_prime)
     print("Runtime for Newton's: " + str(round(perf_counter() - time_start,3)) + "sec")
-    pred_error =  (sum(abs(torch.sign(u_ast_newt) - torch.sign(u_dagger)))/(2*N)*100).item()
+    pred_error =  (sum(abs(torch.sign(u_ast_2) - torch.sign(u_dagger)))/(2*N)*100).item()
     print("Error for Newton's: " + str(round(pred_error,2)) + '%')
+
+    time_start = perf_counter()
+    u_ast_3 = u_ast_GRAD(Data, N, g, alpha, tau, eps, rval, y, Z_prime)
+    print("Runtime for EL: " + str(round(perf_counter() - time_start,3)) + "sec")
+    pred_error =  (sum(abs(torch.sign(u_ast_3) - torch.sign(u_dagger)))/(2*N)*100).item()
+    print("Error for EL: " + str(round(pred_error,2)) + '%')

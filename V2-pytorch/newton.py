@@ -51,7 +51,7 @@ def misfit(u, N_lst, y, Z_p, g):
 
 
 # Returns u* using newton's method
-def u_ast_Newt(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
+def u_ast_NEWT(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
     '''
     X - N*3 vector containing (x, y, z) of all data (assume same size)
     N_lst - indices of X to use (Size: N) (ex. for full N, N_lst = np.arange(N))
@@ -71,3 +71,35 @@ def u_ast_Newt(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
         return final
     if x_0: x_0 = torch.zeros(*N_lst.size())
     return newton(probit_min, x_0)
+
+# Using gradient descent instead of Newton's method to find uast
+def u_ast_GRAD(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
+    '''
+    X - N*3 vector containing (x, y, z) of all data (assume same size)
+    N_lst - indices of X to use (Size: N) (ex. for full N, N_lst = np.arange(N))
+            (if just given size N, change it to list)
+    eps - gives perturbed kernel if eps != 0
+    tau, alpha - parameters for covariance
+    rval - threshold in kernel function
+    '''
+    # adjusted for autograd: floats saving parameters
+    if not torch.is_tensor(N_lst):
+        N_lst = torch.arange(N_lst)
+
+    C_inv = Cov_inv(X, N_lst, eps, alpha, tau, rval)
+
+    u = torch.zeros(*N_lst.size(), requires_grad = True)
+    # Minimizer u for problem defined in [3]-(3)
+    maxit = 100
+    learning_rate = 1e-3
+    tol = 1e-1
+    for it in range(maxit):
+        final = 0.5*torch.dot(u, torch.matmul(C_inv.float(),u)) + misfit(u, N_lst, y, Z_p, g)
+        final.backward(retain_graph=True)
+        with torch.no_grad():
+            u -= u.grad*learning_rate
+            if u.grad.data.norm(2) < tol:
+                break
+            u.grad.zero_()
+
+    return u.data

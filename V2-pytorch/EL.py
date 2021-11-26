@@ -44,7 +44,7 @@ def u_ast_EL(X, N_lst, g, alpha, tau, eps, rval, y, Z_p, x_0 = True):
     def final(u):
     #     C = Cov(X, N, eps, alpha, tau, rval)
 
-        return u-(C.float()@F_sum(N_lst, g, y, Z_p, u)).numpy()
+        return u-(C.float()@F_sum(N_lst, g, y, Z_p, u)).detach().numpy()
 
 #         return u - torch.matmul(C,F_sum(N_lst, g, y, Z_p, u))
     return torch.tensor(scipy.optimize.fsolve(final, x_0))

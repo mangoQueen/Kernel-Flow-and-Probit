@@ -1,6 +1,9 @@
 import torch
 import random
-from newton import u_ast_Newt
+from newton import u_ast_NEWT, u_ast_GRAD
+from EL import u_ast_EL
+import torch
+from torch.autograd import Variable
 
 # Using Kernel Flow method to approximate parameters
 
@@ -46,8 +49,12 @@ def optm_theta(X, N, Z_prime, y, theta_0, learning_rate, tol, maxiter):
         # rho function given in [2]-(6)
         N_f_i, Z_half = select_Nf(N, Z_prime)
 
-        uast = u_ast_Newt(X, N, g, alpha, tau, eps, rval, y, Z_prime)
-        uast_tild = u_ast_Newt(X, N_f_i, g, alpha, tau, eps, rval, y, Z_half)
+        # uast = u_ast_NEWT(X, N, g, alpha, tau, eps, rval, y, Z_prime)
+        # uast_tild = u_ast_NEWT(X, N_f_i, g, alpha, tau, eps, rval, y, Z_half)
+        # uast = u_ast_GRAD(X, N, g, alpha, tau, eps, rval, y, Z_prime)
+        # uast_tild = u_ast_GRAD(X, N_f_i, g, alpha, tau, eps, rval, y, Z_half)
+        uast = u_ast_EL(X, N, g, alpha, tau, eps, rval, y, Z_prime)
+        uast_tild = u_ast_EL(X, N_f_i, g, alpha, tau, eps, rval, y, Z_half)
 
         # Compute |uast-uast_tild|^2/|uast|^2 using L2 norm
         # loop over each valid N_f_i
