@@ -12,6 +12,8 @@
 # In[1]:
 
 import autograd.numpy as np
+from scipy.linalg import fractional_matrix_power
+
 
 # Functions for construction of problem
 
@@ -69,7 +71,7 @@ def Cov_inv(X, N_lst, eps, alpha, tau, r):
     W = weight(X,N_lst,r,eps)
     D = np.diag(W.sum(axis=1))
     L = D - W
-    return (1/tau**2*(L + tau**2*np.eye(N)))**alpha
+    return fractional_matrix_power(1/tau**2*(L + tau**2*np.eye(N)), alpha)
 
 # truncated version of Covariance defined in [3]-(62)
 def Cov_truncated(X, N_lst, eps, alpha, tau, r, n_eig):

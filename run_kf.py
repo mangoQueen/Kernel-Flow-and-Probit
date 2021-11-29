@@ -30,15 +30,15 @@ if __name__ == "__main__":
 
     # Display plot
 
-    # fig = plt.figure()
-    # ax = Axes3D(fig)
-    # ax.scatter(xs[:2*N_each], ys[:2*N_each], zs[:2*N_each], 'r')
-    # ax.scatter(xs[2*N_each:3*N_each], ys[2*N_each:3*N_each], zs[2*N_each:3*N_each], 'b')
-    # ax.set_title('Labeled Data with ' + str(N) +' points')
-    # ax.set_xlabel('x')
-    # ax.set_ylabel('y')
-    # ax.set_zlabel('z');
-    # plt.show()
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    ax.scatter(xs[:2*N_each], ys[:2*N_each], zs[:2*N_each], 'r')
+    ax.scatter(xs[2*N_each:3*N_each], ys[2*N_each:3*N_each], zs[2*N_each:3*N_each], 'b')
+    ax.set_title('Labeled Data with ' + str(N) +' points')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z');
+    plt.show()
 
     parser = argparse.ArgumentParser()
 
