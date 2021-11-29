@@ -14,6 +14,13 @@ Command line arguements for run_kf.py are:
     -tol      tolerance for gradient descent
     -m        maximum number of iterations for gradient descent
 ```
+
+V2-pytorch files are codes implemented using autograd in pytorch. Both autograd versions were computationally expensive. 
+
+run-bayes.py uses Bayesian Optimization from bayes_opt package to find parameters for kernels. 
+
+Jupyter notebooks helpful for visualization
+
 ## Referenced equations from following papers
 
 [1] H. Owhadi and G. R. Yoo. Kernel flows: From learning kernels from data into the abyss. Journal of Computational Physics, 389:22–47, 2019.
